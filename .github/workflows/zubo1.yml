@@ -2,7 +2,7 @@ name: Daily Job
 
 on:
   schedule:
-    - cron: "0 8,20 * * *"
+    - cron: "0 0,4,8,12,16,20 * * *"
   workflow_dispatch:
 
 jobs:
@@ -18,12 +18,14 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y yt-dlp sed nmap
 
+    - name: Stash Local Changes
+      run: |
+        cd $GITHUB_WORKSPACE/speedtest
+        git stash || echo "No local changes to stash"
+
     - name: Pull Remote Changes
       run: |
         cd $GITHUB_WORKSPACE/speedtest
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-        git stash || true  # Stash any local changes if they exist
         git pull origin main
 
     - name: Run Multitest Script
@@ -31,6 +33,11 @@ jobs:
         cd $GITHUB_WORKSPACE/speedtest
         bash ./multi_test.sh
         bash ./fofa.sh
+
+    - name: Apply Stashed Changes
+      run: |
+        cd $GITHUB_WORKSPACE/speedtest
+        git stash pop || echo "No stashed changes to apply"
 
     - name: Update Results
       run: |
