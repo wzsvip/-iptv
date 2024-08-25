@@ -12,18 +12,24 @@ jobs:
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v2
-      
+
     - name: Install Dependencies
       run: |
         sudo apt-get update
         sudo apt-get install -y yt-dlp sed nmap
-      
+
     - name: Run Multitest Script
       #working-directory: iptv/speedtest
       run: |
         cd $GITHUB_WORKSPACE/speedtest
-        bash ./multi_test1.sh
-        bash ./fofa1.sh
+        bash ./multi_test.sh
+        bash ./fofa.sh
+
+    - name: Pull Remote Changes
+      run: |
+        cd $GITHUB_WORKSPACE/speedtest
+        git pull origin main
+
     - name: Update Results
       run: |
         cd $GITHUB_WORKSPACE/speedtest
@@ -32,3 +38,5 @@ jobs:
         git add .
         git commit -m "Update results"
         git push
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
