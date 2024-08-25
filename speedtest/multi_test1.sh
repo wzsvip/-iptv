@@ -27,7 +27,6 @@ case $city_choice in
         stream="udp/239.93.42.33:5140"
         channel_key="四川电信"
         ;;
-        ;;
     2)
         city="Guangdong_332"
         stream="udp/239.77.1.98:5146"
