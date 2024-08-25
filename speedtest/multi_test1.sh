@@ -33,7 +33,6 @@ case $city_choice in
         stream="udp/239.77.1.98:5146"
         channel_key="广东电信"
         ;;
-    
     0)
         # 如果选择是“全部选项”，则逐个处理每个选项
         for option in {1..2}; do
