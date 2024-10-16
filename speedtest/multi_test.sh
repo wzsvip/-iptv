@@ -118,7 +118,7 @@ case $city_choice in
         ;;
     0)
         # 如果选择是“全部选项”，则逐个处理每个选项
-        for option in {1..15}; do
+        for option in {1..16}; do
           bash  ./multi_test.sh $option  # 假定script_name.sh是当前脚本的文件名，$option将递归调用
         done
         exit 0
