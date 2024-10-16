@@ -21,6 +21,7 @@ if [ $# -eq 0 ]; then
   echo "13. 湖南电信（Hunan_282）"
   echo "14. 甘肃电信（Gansu_105）"
   echo "15. 河北联通（Hebei_313）"
+  echo "16. 重庆联通（Chongqing_156）" 
   echo "0. 全部"
   read -t 10 -p "输入选择或在10秒内无输入将默认选择全部: " city_choice
 
@@ -109,6 +110,11 @@ case $city_choice in
         city="Hebei_313"
         stream="rtp/239.253.93.134:6631"
         channel_key="河北联通"
+        ;;
+    16)
+        city="Chongqing_156"
+        stream="udp/225.0.4.197:7980"
+        channel_key="重庆联通"
         ;;
     0)
         # 如果选择是“全部选项”，则逐个处理每个选项
@@ -244,6 +250,8 @@ echo "甘肃电信,#genre#" >>zubo.txt
 cat txt/Gansu_105.txt >>zubo.txt
 echo "河北联通,#genre#" >>zubo.txt
 cat txt/Hebei_313.txt >>zubo.txt
+echo "重庆联通,#genre#" >>zubo.txt
+cat txt/Chongqing_156.txt >>zubo.txt
 
 # scp root@你的服务器:/speedtest/mylist.txt .
 # sed -i '/^上海电信/,$d' mylist.txt
