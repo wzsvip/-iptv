@@ -21,7 +21,7 @@ if [ $# -eq 0 ]; then
   echo "13. 湖南电信（Hunan_282）"
   echo "14. 甘肃电信（Gansu_105）"
   echo "15. 河北联通（Hebei_313）"
-  echo "16. 重庆联通（Chongqing_156）" 
+  echo "16. 重庆联通（Chongqing_liantong_156）" 
   echo "0. 全部"
   read -t 10 -p "输入选择或在10秒内无输入将默认选择全部: " city_choice
 
@@ -112,7 +112,7 @@ case $city_choice in
         channel_key="河北联通"
         ;;
     16)
-        city="Chongqing_156"
+        city="Chongqing_liantong_156"
         stream="udp/225.0.4.197:7980"
         channel_key="重庆联通"
         ;;
@@ -186,7 +186,7 @@ while read line; do
     else
         echo $url
         curl $url --connect-timeout 3 --max-time 10 -o /dev/null >zubo.tmp 2>&1
-        a=$(head -n 3 zubo.tmp | awk '{print $NF}' | tail -n 1)
+        a=$(head -n 5 zubo.tmp | awk '{print $NF}' | tail -n 1)
     fi  
 
     echo "第$i/$lines个：$ip    $a"
@@ -199,9 +199,11 @@ cat "result/result_${city}.txt"
 ip1=$(head -n 1 result/result_${city}.txt | awk '{print $2}')
 ip2=$(head -n 2 result/result_${city}.txt | tail -n 1 | awk '{print $2}')
 ip3=$(head -n 3 result/result_${city}.txt | tail -n 1 | awk '{print $2}')
+ip4=$(head -n 4 result/result_${city}.txt | tail -n 1 | awk '{print $2}')
+ip5=$(head -n 5 result/result_${city}.txt | tail -n 1 | awk '{print $2}')
 rm -f speedtest_${city}_$time.log
 
-#----------------------用3个最快ip生成对应城市的txt文件---------------------------
+#----------------------用5个最快ip生成对应城市的txt文件---------------------------
 
 # if [ $city = "Shanghai_103" ]; then
      program="template/template_${city}.txt"
@@ -213,9 +215,11 @@ sed "s/ipipip/$ip1/g" $program >tmp1.txt
 echo "=======================sed "s/ipipip/$ip1/g" $program >tmp1.txt"
 sed "s/ipipip/$ip2/g" $program >tmp2.txt
 sed "s/ipipip/$ip3/g" $program >tmp3.txt
-cat tmp1.txt tmp2.txt tmp3.txt >txt/${city}.txt
+sed "s/ipipip/$ip4/g" $program >tmp4.txt
+sed "s/ipipip/$ip5/g" $program >tmp5.txt
+cat tmp1.txt tmp2.txt tmp3.txt tmp4.txt tmp5.txt >txt/${city}.txt
 
-rm -rf tmp1.txt tmp2.txt tmp3.txt
+rm -rf tmp1.txt tmp2.txt tmp3.txt tmp4.txt tmp5.txt
 
 
 #--------------------合并所有城市的txt文件为:   zubo.txt-----------------------------------------
@@ -251,7 +255,7 @@ cat txt/Gansu_105.txt >>zubo.txt
 echo "河北联通,#genre#" >>zubo.txt
 cat txt/Hebei_313.txt >>zubo.txt
 echo "重庆联通,#genre#" >>zubo.txt
-cat txt/Chongqing_156.txt >>zubo.txt
+cat txt/Chongqing_liantong_156.txt >>zubo.txt
 
 # scp root@你的服务器:/speedtest/mylist.txt .
 # sed -i '/^上海电信/,$d' mylist.txt
